@@ -32,7 +32,7 @@ function Queue.IsReady()
 end
 
 function Queue.LoadExports()
-    Queue.Exports = exports.connectqueue:GetQueueExports()
+    Queue.Exports = exports.qbqueue:GetQueueExports()
     Queue.Ready = true
     Queue.ReadyCallbacks()
 end
