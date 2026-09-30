@@ -4,7 +4,7 @@ Queue.Exports = nil
 Queue.ReadyCbs = {}
 Queue.CurResource = GetCurrentResourceName()
 
-if Queue.CurResource == "connectqueue" then return end
+if Queue.CurResource == "qbqueue" or Queue.CurResource == "connectqueue" then return end
 
 function Queue.OnReady(cb)
     if not cb then return end
@@ -45,7 +45,7 @@ function Queue.ReadyCallbacks()
 end
 
 AddEventHandler("onResourceStart", function(resource)
-    if resource == "connectqueue" then
+    if resource == "qbqueue" then
         while GetResourceState(resource) ~= "started" do Citizen.Wait(0) end
         Citizen.Wait(1)
         Queue.LoadExports()
@@ -53,7 +53,7 @@ AddEventHandler("onResourceStart", function(resource)
 end)
 
 AddEventHandler("onResourceStop", function(resource)
-    if resource == "connectqueue" then
+    if resource == "qbqueue" then
         Queue.Ready = false
         Queue.Exports = nil
     end
