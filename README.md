@@ -93,3 +93,7 @@ Queue.Exports:IsPriority(ids)
 Queue.Exports:GetSize()
 -- plus many more...
 ```
+
+## Tests
+
+Run `lua test/smoke/join_delay.lua` from the resource root to check startup admission timing with a controlled clock and deferrals. The check does not start FiveM or external services.
