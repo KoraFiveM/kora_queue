@@ -1,5 +1,7 @@
 fx_version 'bodacious'
 game 'common'
+-- Keep the legacy resource name resolvable for exports['qbqueue'] callers.
+provide 'qbqueue'
 
 server_script "server/sv_queue_config.lua"
 server_script "connectqueue.lua"

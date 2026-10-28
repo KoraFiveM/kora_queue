@@ -9,7 +9,7 @@ local function host(startup, duration)
     local env = {}
     for key, value in pairs(_G) do env[key] = value end
     env.IsDuplicityVersion = function() return true end
-    env.GetCurrentResourceName = function() return 'qbqueue' end
+    env.GetCurrentResourceName = function() return 'kora_queue' end
     env.GetGameTimer = function() return clock.now end
     env.GetConvarInt = function(_, fallback) return fallback end
     env.GetConvar = function(name) return name == 'sv_hostname' and 'default FXServer' or 'false' end

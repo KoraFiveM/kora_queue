@@ -16,11 +16,11 @@ local function facade(name)
     local env, handlers, timers = {}, {}, {}
     for key, value in pairs(_G) do env[key] = value end
     env.GetCurrentResourceName = function() return name end
-    env.GetResourceState = function(which) assert(which == 'qbqueue'); return state end
+    env.GetResourceState = function(which) assert(which == 'kora_queue'); return state end
     env.Citizen = { Wait = function(ms) return coroutine.yield(ms) end }
     env.AddEventHandler = function(event, cb) handlers[event] = cb end
     env.SetTimeout = function(ms, cb) assert(ms == 1); timers[#timers + 1] = cb end
-    env.exports = { qbqueue = { GetQueueExports = function()
+    env.exports = { kora_queue = { GetQueueExports = function()
         assert(state == 'started', 'provider exports requested before ready')
         loads = loads + 1
         return active
@@ -58,13 +58,13 @@ assert(#active.removes == 1 and active.removes[1] == 'license:test')
 
 local old = active
 state = 'stopped'
-events.onResourceStop('qbqueue')
+events.onResourceStop('kora_queue')
 assert(not queue.IsReady() and queue.Exports == nil, 'provider stop must invalidate facade')
 queue.AddPriority('blocked', 99)
 queue.RemovePriority('blocked')
 assert(#old.adds == 1 and #old.removes == 1, 'stopped facade must not forward priority calls')
 active, state = provider(), 'starting'
-local start = coroutine.create(function() events.onResourceStart('qbqueue') end)
+local start = coroutine.create(function() events.onResourceStart('kora_queue') end)
 assert(resume(start) == 0 and loads == 1 and not queue.IsReady())
 state = 'started'
 assert(resume(start) == 1 and loads == 1 and not queue.IsReady())
@@ -84,7 +84,7 @@ for _, other in ipairs({ 'unrelated', 'connectqueue' }) do
     events.onResourceStart(other)
     assert(queue.IsReady() and queue.Exports == active and loads == 2 and queued == 2 and late == 1)
 end
-for _, owner in ipairs({ 'qbqueue', 'connectqueue' }) do
+for _, owner in ipairs({ 'kora_queue', 'connectqueue' }) do
     local self, selfEvents, selfTimers = facade(owner)
     assert(self.CurResource == owner and self.Ready == false and self.Exports == nil)
     assert(next(selfEvents) == nil and #selfTimers == 0, 'provider self guard must skip facade setup')
