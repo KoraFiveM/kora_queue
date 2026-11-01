@@ -658,7 +658,6 @@ local function playerConnect(name, setKickReason, deferrals)
     end
 
     if not ids then
-        -- prevent joining
         done(Config.Language.idrr)
         CancelEvent()
         Queue:DebugPrint("Dropped " .. name .. ", couldn't retrieve any of their id's")
@@ -666,7 +665,6 @@ local function playerConnect(name, setKickReason, deferrals)
     end
 
     if Config.RequireSteam and not Queue:IsSteamRunning(src) then
-        -- prevent joining
         done(Config.Language.steam)
         CancelEvent()
         return
@@ -679,7 +677,6 @@ local function playerConnect(name, setKickReason, deferrals)
         if reason == false or #_Queue.JoinCbs <= 0 then allow = true return end
 
         if reason then
-            -- prevent joining
             allow = false
             done(reason and tostring(reason) or "You were blocked from joining")
             Queue:RemoveFromQueue(ids)
@@ -703,7 +700,6 @@ local function playerConnect(name, setKickReason, deferrals)
         Queue:RemoveFromConnecting(ids)
 
         if Queue:NotFull() then
-            -- let them in the server
 
             if not Queue:IsInQueue(ids) then
                 Queue:AddToQueue(ids, connectTime, name, src, deferrals)
@@ -745,7 +741,6 @@ local function playerConnect(name, setKickReason, deferrals)
     end
 
     if Queue:NotFull(true) and _Queue.JoinDelay <= GetGameTimer() then
-        -- let them in the server
         local added = Queue:AddToConnecting(ids, true, true, done)
         if not added then CancelEvent() return end
 
@@ -795,7 +790,6 @@ local function playerConnect(name, setKickReason, deferrals)
         end
 
         if pos <= 1 and Queue:NotFull() and _Queue.JoinDelay <= GetGameTimer() then
-            -- let them in the server
             local added = Queue:AddToConnecting(ids)
 
             updateCard(data, 1, Queue:GetSize(), (Config.Card.status and Config.Card.status.joining) or Config.Language.joining, queueFormatTime(data.queuetime()), data.deferrals)
