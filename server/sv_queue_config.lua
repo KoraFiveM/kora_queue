@@ -70,14 +70,14 @@ Config.Card = {
     fallbackToText = true,
 
     image = {
-        enabled = true,
-        url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsh0jJG96uxd4bDPJ50yRi9lTHhZxfVdsOQ8RxgDDlMUUp5VcBEJrfbAw&s=10",
+        enabled = false,
+        url = "",
         size = "Large",
         horizontalAlignment = "Center"
     },
 
-    title = "Your Server",
-    description = "Welcome to our server. Please wait while we find you a slot.",
+    title = "Kora",
+    description = "Welcome to Kora. Please wait while we find you a slot.",
 
     show = {
         playerName = true,
@@ -97,7 +97,7 @@ Config.Card = {
         connecting = "Connecting..."
     },
 
-    footer = "discord.gg/yourserver",
+    footer = "Join our community to play.",
 
     -- Optional extra text blocks. Supported variables:
     -- ${playerName}, ${position}, ${queueSize}, ${queueTime}, ${priority},
