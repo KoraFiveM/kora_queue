@@ -340,7 +340,10 @@ function Queue:GetIds(src)
     ids = ids ~= nil and ids or false
 
     if ids and #ids > 1 then
-        for k, id in ipairs(ids) do
+        -- Walk backwards: table_remove shifts later indices down, which would
+        -- skip the entry right after a removal if this went forward.
+        for k = #ids, 1, -1 do
+            local id = ids[k]
             if string_sub(id, 1, 3) == "ip:" and not Queue:IsPriority({id}) then table_remove(ids, k) end
         end
     end
@@ -692,7 +695,11 @@ local function playerConnect(name, setKickReason, deferrals)
     while allow == nil do Citizen.Wait(0) end
     if not allow then return end
 
-    if Config.PriorityOnly and not Queue:IsPriority(ids) then done(Config.Language.wlonly) return end
+    if Config.PriorityOnly and not Queue:IsPriority(ids) then
+        done(Config.Language.wlonly)
+        CancelEvent()
+        return
+    end
 
     local rejoined = false
 
