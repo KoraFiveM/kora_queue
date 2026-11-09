@@ -8,3 +8,6 @@ server_script "connectqueue.lua"
 
 server_script "shared/sh_queue.lua"
 client_script "shared/sh_queue.lua"
+
+-- kora_qa: Gherkin test scenarios (converted legacy tests), see [kora]/kora_qa/README.md
+qa_feature 'tests/*.feature'
