@@ -59,9 +59,16 @@ function Queue:DebugPrint(msg)
     end
 end
 
+-- Converts a hex "steam:" identifier to the legacy steam_0 form. Anything else
+-- (a legacy steam_0:a:b id itself, or a malformed one) has no conversion: nil.
 function Queue:HexIdToSteamId(hexId)
-    local cid = math_floor(tonumber(string_sub(hexId, 7), 16))
-	local steam64 = math_floor(tonumber(string_sub( cid, 2)))
+    if string_sub(hexId, 1, 6) ~= "steam:" then return nil end
+    local hex = tonumber(string_sub(hexId, 7), 16)
+    if not hex then return nil end
+    local cid = math_floor(hex)
+	local steam64 = tonumber(string_sub( cid, 2))
+	if not steam64 then return nil end
+	steam64 = math_floor(steam64)
 	local a = steam64 % 2 == 0 and 0 or 1
 	local b = math_floor(math_abs(6561197960265728 - steam64 - a) / 2)
 	local sid = "steam_0:"..a..":"..(a == 1 and b -1 or b)
@@ -153,7 +160,7 @@ function Queue:IsPriority(ids)
 
         if string_sub(id, 1, 5) == "steam" then
             local steamid = Queue:HexIdToSteamId(id)
-            if prioList[steamid] then prio = prioList[steamid] break end
+            if steamid and prioList[steamid] then prio = prioList[steamid] break end
         end
     end
 
@@ -178,7 +185,7 @@ function Queue:HasTempPriority(ids)
 
         if string_sub(id, 1, 5) == "steam" then
             local steamid = Queue:HexIdToSteamId(id)
-            if tmpPrio[steamid] then return tmpPrio[steamid].power, tmpPrio[steamid].endTime, id end
+            if steamid and tmpPrio[steamid] then return tmpPrio[steamid].power, tmpPrio[steamid].endTime, id end
         end
     end
 
