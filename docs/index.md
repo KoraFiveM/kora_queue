@@ -22,13 +22,14 @@ Current version: see `version` in `fxmanifest.lua`.
 - **Console commands** - debugging commands under `queue`. See [Commands](./commands.md).
 - **Hardcap disabling** - stops the `hardcap` resource by default (`Config.DisableHardCap`).
 
-## Pages
+## Documentation map
 
-- [Installation](./installation.md) - setup, convars and using the API from another resource
+- [Installation](./installation.md) - setup, manifest reference, convars, the consuming-resource facade and using the API from another resource
+- [How to use](./how-to-use.md) - the connection flow, the connecting card, priority and whitelist, hardcap removal and integration examples
+- [Commands](./commands.md) - the `queue` rcon commands with examples, a summary table and notes
+- [API](./api.md) - the `Queue` helper and the `GetQueueExports` export
 - [Configuration](./configuration.md) - every `Config` option and convar
 - [Priority](./priority.md) - priority identifiers, power, temporary priority and the grace system
-- [API](./api.md) - the `Queue` helper and the `GetQueueExports` export
-- [Commands](./commands.md) - the `queue` console commands
 - [Events](./events.md) - the net event and game events the resource uses
 - [Troubleshooting](./troubleshooting.md) - known caveats and common problems
 
