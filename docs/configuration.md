@@ -1,6 +1,6 @@
 ---
 title: Configuration
-sidebar_position: 3
+sidebar_position: 6
 ---
 
 # Configuration
@@ -18,7 +18,7 @@ All options are in `server/sv_queue_config.lua` (a server script, loaded before 
 | `Config.JoinDelay` | `30000` | Milliseconds after resource start during which players can queue but are not admitted. |
 | `Config.AntiSpam` | `false` | Hold each connecting player on a countdown before they enter the queue. |
 | `Config.AntiSpamTimer` | `30` | Countdown length in seconds. |
-| `Config.PleaseWait` | `Please wait %f seconds...` | Countdown text. Must contain one numeric format specifier. |
+| `Config.PleaseWait` | `Please wait %f seconds. The connection will start automatically!` | Countdown text. Must contain one numeric format specifier. |
 
 ## Timeouts
 
