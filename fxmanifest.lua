@@ -1,5 +1,5 @@
 fx_version 'bodacious'
-version '0.1.0'
+version '0.2.0'
 game 'common'
 server_script "server/sv_queue_config.lua"
 server_script "connectqueue.lua"
