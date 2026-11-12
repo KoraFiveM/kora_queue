@@ -99,3 +99,5 @@ Queue.Exports:GetSize()
 Run `lua test/smoke/join_delay.lua` from the resource root to check startup admission timing with a controlled clock and deferrals. The check does not start FiveM or external services.
 
 Run `lua test/smoke/queue_facade.lua` to check consumer readiness, callbacks and exports across queue restarts without starting FiveM.
+
+Full documentation: see [docs/](docs/index.md). Note: the install and API examples above predate the rename; the resource is `kora_queue` and the helper script is `@kora_queue/connectqueue.lua`.
