@@ -6,11 +6,11 @@ sidebar_position: 2
 
 # Installation
 
-Kora Queue is a connection queue and lightweight whitelist/priority layer: it intercepts `playerConnecting`, holds arriving players in an ordered queue until a slot is free, and shows them an Adaptive Card (or plain text) while they wait. It has no dependency on any other kora resource and no database.
+Kora Queue is a connection queue and lightweight whitelist/priority layer: it intercepts `playerConnecting`, holds arriving players in an ordered queue until a slot is free, and shows them an Adaptive Card (or plain text) while they wait. It depends on `kora_lib` for English locale strings and has no database.
 
 ## Install Kora Queue
 
-1. **Add the folder** — Place `kora_queue` in your resources directory (on the Kora recipe it is `resources/[standalone]/kora_queue`). It is standalone: no `dependency` is declared.
+1. **Add the folder** — Place `kora_queue` in your resources directory (on the Kora recipe it is `resources/[standalone]/kora_queue`). Ensure `kora_lib` starts before it.
 
 2. **Start it early** — Add `ensure kora_queue` near the top of `server.cfg`, before any resource that itself wants to gate connections. `shared/sh_queue.lua` (loaded as a server script) registers its `playerConnecting` handler as soon as the resource starts; a resource that also hooks that event and starts after kora_queue runs after it.
 
@@ -31,12 +31,16 @@ Kora Queue is a connection queue and lightweight whitelist/priority layer: it in
 ```lua title="fxmanifest.lua"
 fx_version 'bodacious'
 game 'common'
+dependency 'kora_lib'
+shared_script '@kora_lib/init.lua'
 
 server_script "server/sv_queue_config.lua"
 server_script "connectqueue.lua"
 
 server_script "shared/sh_queue.lua"
 client_script "shared/sh_queue.lua"
+
+files { 'locales/*.lua' }
 ```
 
 - The real queue implementation (the `playerConnecting` handler, the `Queue` object, the `queue` rcon commands and the `GetQueueExports` export) lives in `shared/sh_queue.lua`; `connectqueue.lua` is only the consumer helper script described below. `shared/sh_queue.lua` is loaded as BOTH a server script and a client script. The top of the file checks `IsDuplicityVersion()`: on the client it only waits for `NetworkIsSessionStarted()` and fires `Queue:playerActivated` once, then returns — none of the `Queue` table or its functions exist on the client.
