@@ -471,14 +471,14 @@ local function queueCard(deferrals, data, position, queueSize, status, queueTime
 
     local card = Config.Card
     local vars = {
-        playerName = data and data.name or "Player",
+        playerName = data and data.name or Kora.lang('card.player'),
         position = position or 0,
         queueSize = queueSize or 0,
         queueTime = queueTime or "00:00:00",
         priority = data and data.priority or 0,
-        serverName = Queue.InitHostName or "FiveM Server",
+        serverName = Queue.InitHostName or Kora.lang('card.server_name'),
         maxPlayers = Queue.MaxPlayers,
-        status = status or "Waiting"
+        status = status or Kora.lang('card.waiting_short')
     }
 
     local body = {}
@@ -489,7 +489,7 @@ local function queueCard(deferrals, data, position, queueSize, status, queueTime
             url = queueCardReplace(card.image.url, vars),
             size = card.image.size or "Large",
             horizontalAlignment = card.image.horizontalAlignment or "Center",
-            altText = card.title or "Server image"
+            altText = card.title or Kora.lang('card.server_image')
         })
     end
 
@@ -519,25 +519,25 @@ local function queueCard(deferrals, data, position, queueSize, status, queueTime
     local facts = {}
 
     if show.playerName then
-        table_insert(facts, { title = "Player", value = vars.playerName })
+        table_insert(facts, { title = Kora.lang('card.player'), value = vars.playerName })
     end
     if show.position then
-        table_insert(facts, { title = "Position", value = tostring(vars.position) })
+        table_insert(facts, { title = Kora.lang('card.position'), value = tostring(vars.position) })
     end
     if show.queueSize then
-        table_insert(facts, { title = "Queue", value = tostring(vars.queueSize) })
+        table_insert(facts, { title = Kora.lang('card.queue'), value = tostring(vars.queueSize) })
     end
     if show.queueTime then
-        table_insert(facts, { title = "Queue Time", value = vars.queueTime })
+        table_insert(facts, { title = Kora.lang('card.queue_time'), value = vars.queueTime })
     end
     if show.priority then
-        table_insert(facts, { title = "Priority", value = tostring(vars.priority or 0) })
+        table_insert(facts, { title = Kora.lang('card.priority'), value = tostring(vars.priority or 0) })
     end
     if show.serverName then
-        table_insert(facts, { title = "Server", value = vars.serverName })
+        table_insert(facts, { title = Kora.lang('card.server'), value = vars.serverName })
     end
     if show.maxPlayers then
-        table_insert(facts, { title = "Slots", value = tostring(vars.maxPlayers) })
+        table_insert(facts, { title = Kora.lang('card.slots'), value = tostring(vars.maxPlayers) })
     end
 
     if #facts > 0 then
@@ -549,7 +549,7 @@ local function queueCard(deferrals, data, position, queueSize, status, queueTime
     end
 
     if card.status and card.status.enabled ~= false then
-        local statusText = status or card.status.waiting or "Waiting..."
+        local statusText = status or card.status.waiting or Kora.lang('card.waiting_short')
         table_insert(body, {
             type = "TextBlock",
             text = (card.status.label and card.status.label ~= "" and ("**" .. card.status.label .. ":** ") or "") .. statusText,
@@ -688,7 +688,7 @@ local function playerConnect(name, setKickReason, deferrals)
 
         if reason then
             allow = false
-            done(reason and tostring(reason) or "You were blocked from joining")
+            done(reason and tostring(reason) or Kora.lang('queue.blocked'))
             Queue:RemoveFromQueue(ids)
             Queue:RemoveFromConnecting(ids)
             Queue:DebugPrint(string_format("%s[%s] was blocked from joining; Reason: %s", name, ids[1], reason))
@@ -765,7 +765,7 @@ local function playerConnect(name, setKickReason, deferrals)
     end
     
     local initialSeconds = data.queuetime()
-    updateCard(data, pos, Queue:GetSize(), (Config.Card.status and Config.Card.status.waiting) or "Waiting for a server slot...", queueFormatTime(initialSeconds))
+    updateCard(data, pos, Queue:GetSize(), (Config.Card.status and Config.Card.status.waiting) or Kora.lang('card.waiting_for_slot'), queueFormatTime(initialSeconds))
 
     if rejoined then return end
 
@@ -789,7 +789,7 @@ local function playerConnect(name, setKickReason, deferrals)
         end
 
         if not data or not data.deferrals or not data.source or not pos then
-            remove("[Queue] Removed from queue, queue data invalid :(")
+            remove(Kora.lang('queue.invalid_queue_data'))
             Queue:DebugPrint(tostring(name .. "[" .. ids[1] .. "] was removed from the queue because they had invalid data"))
             return
         end
@@ -798,7 +798,7 @@ local function playerConnect(name, setKickReason, deferrals)
         if not endPoint then data.timeout = data.timeout + 0.5 else data.timeout = 0 end
 
         if data.timeout >= Config.QueueTimeOut and os_time() - connectTime > 5 then
-            remove("[Queue] Removed due to timeout")
+            remove(Kora.lang('queue.removed_timeout'))
             Queue:DebugPrint(name .. "[" .. ids[1] .. "] was removed from the queue because they timed out")
             return
         end
@@ -827,7 +827,7 @@ local function playerConnect(name, setKickReason, deferrals)
         local seconds = data.queuetime()
         local qTime = string_format("%02d", math_floor((seconds % 86400) / 3600)) .. ":" .. string_format("%02d", math_floor((seconds % 3600) / 60)) .. ":" .. string_format("%02d", math_floor(seconds % 60))
 
-        updateCard(data, pos, Queue:GetSize(), (Config.Card.status and Config.Card.status.waiting) or "Waiting for a server slot...", qTime, data.deferrals)
+        updateCard(data, pos, Queue:GetSize(), (Config.Card.status and Config.Card.status.waiting) or Kora.lang('card.waiting_for_slot'), qTime, data.deferrals)
     end
 end
 AddEventHandler("playerConnecting", playerConnect)
