@@ -1,5 +1,5 @@
 fx_version 'bodacious'
-version '0.2.1'
+version '0.2.2'
 game 'common'
 dependency 'kora_lib'
 shared_script '@kora_lib/init.lua'
